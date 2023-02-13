@@ -1,4 +1,5 @@
 #include "Produto.h"
+#include <sstream>
 
 // Métodos de sobrecarga do construtor
 Produto::Produto(
@@ -71,9 +72,18 @@ int Produto::getQuantidade() const {
 }
 
 // Métodos da classe
-void Produto::imprimirProduto() {
-  cout << marca << " " << modelo << "\n";
-  cout << "  | ID: " << ID << "\n";
-  cout << "  | Preço: R$" << preco << "\n";
-  cout << "  | Quantidade: " << quantidade << "\n";
+vector<vector<string>> Produto::imprimirProduto() {
+  stringstream precoStream;
+  precoStream << fixed << setprecision(2) << preco;
+
+  return vector<vector<string>> {
+    { marca + " " + modelo },
+    { 
+      "Marca: " + marca, 
+      "Modelo: " + modelo, 
+      "ID: " + ID, 
+      "Preço: R$" + precoStream.str(), 
+      "Quantidade: " + to_string(quantidade)
+    }
+  };
 }

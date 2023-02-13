@@ -1,43 +1,51 @@
-#ifndef FonteDeAlimentacao_H
-#define FonteDeAlimentacao_H
+#ifndef PlacaMae_H
+#define PlacaMae_H
 
 #include "Produto.h"
 
-class FonteDeAlimentacao: public Produto {
+class PlacaMae: public Produto {
   private:
     // Atributos
-    int potencia;
+    string plataforma;
+    string socket;
+    string memoria;
     string fatorForma;
 
   public:
     // Métodos de sobrecarga do construtor
-    FonteDeAlimentacao(
+    PlacaMae(
       string modelo = "",
       string marca = "",
       string ID = "",
       float preco = 0,
       int quantidade = 0,
-      int potencia = 0,
+      string plataforma = "",
+      string socket = "",
+      string memoria = "",
       string fatorForma = ""
     );
 
     // Método do destrutor
-    ~FonteDeAlimentacao();
+    ~PlacaMae();
 
     // Métodos de salvamento e leitura
     virtual void serializar(ostream &os) override;
     virtual void desserializar(istream &is) override;
 
     // Métodos de modificação dos atributos
-    void setPotencia(int potencia);
+    void setPlataforma(string plataforma);
+    void setSocket(string socket);
+    void setMemoria(string memoria);
     void setFatorForma(string fatorForma);
 
     // Métodos de retorno dos atributos
-    int getPotencia() const;
+    string getPlataforma() const;
+    string getSocket() const;
+    string getMemoria() const;
     string getFatorForma() const;
 
     // Métodos da classe
-    virtual void imprimirProduto() override;
+    virtual vector<vector<string>> imprimirProduto() override;
 };
 
 #endif

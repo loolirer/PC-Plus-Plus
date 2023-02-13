@@ -72,10 +72,17 @@ string PlacaMae::getFatorForma() const {
   return fatorForma;
 }
 
-void PlacaMae::imprimirProduto() {
-  Produto::imprimirProduto();
-  cout << "  | Plataforma: " << plataforma << "\n";
-  cout << "  | Socket: " << socket << "\n";
-  cout << "  | Memoria: " << memoria << "\n";
-  cout << "  | Fator Forma: " << fatorForma << "\n\n";
+vector<vector<string>> PlacaMae::imprimirProduto() {
+  vector<vector<string>> dadosProduto = Produto::imprimirProduto();
+
+  dadosProduto[1].insert(
+    dadosProduto[1].end(),
+    {
+      "Plataforma: " + plataforma,
+      "Socket: " + socket,
+      "Tipo de Memória: " + memoria,
+      "Fator Forma: " + fatorForma
+    }
+  );
+  return dadosProduto;
 }

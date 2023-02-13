@@ -53,8 +53,15 @@ string Gabinete::getTamanho() const {
 }
 
 // Métodos da classe
-void Gabinete::imprimirProduto() {
-  Produto::imprimirProduto();
-  cout << "  | Fator Forma: " << fatorForma << "\n";
-  cout << "  | Tamanho: " << tamanho << "\n\n";
+vector<vector<string>> Gabinete::imprimirProduto() {
+  vector<vector<string>> dadosProduto = Produto::imprimirProduto();
+
+  dadosProduto[1].insert(
+    dadosProduto[1].end(),
+    { 
+      "Fator Forma: " + fatorForma, 
+      "Tamanho: " + tamanho 
+    }
+  );
+  return dadosProduto;
 }

@@ -41,10 +41,6 @@ string Pedido::getPagamento() const {
   return pagamento;
 }
 
-string Pedido::getCupom() const {
-  return cupom;
-}
-
 // Funções utilitárias
 int Pedido::procurarItem(Produto produto) {
 	for (unsigned i = 0; i < itens.size(); i++) {
@@ -83,9 +79,6 @@ void Pedido::gerarCupom() {
            << "[PC++]"
            << resetiosflags(ios::right)
            << string(3, '\n')
-           << string(25, ' ')
-           << "{DETALHES DO PEDIDO}"
-           << string(3, '\n')
            << setiosflags(ios::left)
            << setw(30)
            << "Item"
@@ -97,8 +90,8 @@ void Pedido::gerarCupom() {
            << setw(11)
            << "Subtotal"
            << endl
-           << string(70, '_')
-           << endl << endl
+           << "——————————————————————————————————————————————————————————————————————"
+           << endl
            << resetiosflags(ios::right);
 
     for (int i = 0; i < itens.size(); i++) {
@@ -121,9 +114,11 @@ void Pedido::gerarCupom() {
              << endl
              << resetiosflags(ios::right);
     }
+
     calcularTotal();
-    buffer << string(70, '_')
-           << endl << endl
+
+    buffer << "——————————————————————————————————————————————————————————————————————"
+           << endl
            << setw(51)
            << "Método de Pagamento: " + pagamento
            << setiosflags(ios::right)
@@ -136,6 +131,63 @@ void Pedido::gerarCupom() {
   }
 
   cupom = buffer.str();
+}
+
+int Pedido::imprimirPedido(InterfaceGrafica interfaceGrafica, bool navegar) {
+  interfaceGrafica.limparTela();
+  interfaceGrafica.setTelas(vector<dadosTela>{{"DETALHES DO PEDIDO", 1}});
+  interfaceGrafica.renderTela();
+
+  vector<dadosTexto> textos;
+
+  gerarCupom();
+
+  string linha;
+  for(auto c : cupom) {
+    if (c == '\n') {
+      textos.push_back({ linha });
+      linha.clear();
+    } else {
+      linha.push_back(c);
+    }
+  }
+
+  for (unsigned i = 0; i < textos.size(); i++) 
+    (i > 4 && i < textos.size() - 2) 
+      ? textos[i].navegavel = true 
+      : textos[i].navegavel = false;
+
+  interfaceGrafica.renderTexto(
+    0,
+    textos,
+    MEIO,
+    MEIO
+  );
+
+  if (navegar) {
+    interfaceGrafica.renderTexto(
+      0,
+      {
+        { "Selecione um Item para ser Removido do Pedido"},
+        { "" },
+        { "▲ Mover Para Cima / ▼ Mover para Baixo" }
+      },
+      MEIO,
+      FIM
+    );
+  } else {
+    interfaceGrafica.renderTexto(
+      0,
+      {
+        { "Pressione Enter para Retornar", true },
+      },
+      MEIO,
+      FIM
+    );
+  }
+
+  int resultadoNavegar = interfaceGrafica.navegar(navegar, false, true);
+  return resultadoNavegar;
 }
 
 // Métodos da classe
@@ -180,11 +232,6 @@ bool Pedido::removerItens(Produto produto, int quantidade) {
     }
     return true;
   }
-}
-
-void Pedido::imprimirPedido() {
-  gerarCupom();
-  cout << cupom;
 }
 
 vector<Produto> Pedido::realizarPedido(Cliente* cliente, string pagamento) {

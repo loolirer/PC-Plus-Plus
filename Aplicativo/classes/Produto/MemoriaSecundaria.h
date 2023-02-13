@@ -37,7 +37,7 @@ class MemoriaSecundaria: public Produto {
     int getCapacidade() const;
 
     // Métodos da classe
-    virtual void imprimirProduto() override;
+    virtual vector<vector<string>> imprimirProduto() override;
 };
 
 #endif

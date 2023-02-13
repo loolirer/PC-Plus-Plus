@@ -1,47 +1,43 @@
-#ifndef MemoriaRAM_H
-#define MemoriaRAM_H
+#ifndef FonteDeAlimentacao_H
+#define FonteDeAlimentacao_H
 
 #include "Produto.h"
 
-class MemoriaRAM: public Produto {
+class FonteDeAlimentacao: public Produto {
   private:
     // Atributos
-    int capacidade;
-    int frequencia;
-    string DDR;
+    int potencia;
+    string fatorForma;
 
   public:
     // Métodos de sobrecarga do construtor
-    MemoriaRAM(
+    FonteDeAlimentacao(
       string modelo = "",
       string marca = "",
       string ID = "",
       float preco = 0,
       int quantidade = 0,
-      int capacidade = 0,
-      int frequencia = 0,
-      string DDR = ""
+      int potencia = 0,
+      string fatorForma = ""
     );
 
     // Método do destrutor
-    ~MemoriaRAM();
+    ~FonteDeAlimentacao();
 
     // Métodos de salvamento e leitura
     virtual void serializar(ostream &os) override;
     virtual void desserializar(istream &is) override;
 
     // Métodos de modificação dos atributos
-    void setCapacidade(int capacidade);
-    void setFrequencia(int frequencia);
-    void setDDR(string DDR);
+    void setPotencia(int potencia);
+    void setFatorForma(string fatorForma);
 
     // Métodos de retorno dos atributos
-    int getCapacidade() const;
-    int getFrequencia() const;
-    string getDDR() const;
+    int getPotencia() const;
+    string getFatorForma() const;
 
     // Métodos da classe
-    virtual void imprimirProduto() override;
+    virtual vector<vector<string>> imprimirProduto() override;
 };
 
 #endif

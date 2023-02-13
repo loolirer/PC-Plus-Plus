@@ -1,4 +1,5 @@
 #include "Loja.h"
+#include <Windows.h>
 
 Loja::Loja() {
   lerEstoque();
@@ -7,12 +8,15 @@ Loja::Loja() {
 }
 
 Loja::~Loja() {
-  //escreverEstoque();
+  CreateDirectory("binarios", NULL);
+
+  escreverEstoque();
   escreverClientes();
   escreverAdministradores();
 
   for (auto produto: produtos)
     delete produto;
+
 }
 
 bool Loja::adicionarProduto(Produto* produto, int quantidade) {
@@ -81,6 +85,7 @@ bool Loja::adicionarAdministrador(Administrador administrador) {
   }
 
   administradores.push_back(administrador);
+
   return true;
 }
 
@@ -110,9 +115,128 @@ void Loja::ordenarPorPreco() {
   );
 }
 
-vector<string> Loja::imprimirEstoque(int tipoProduto, int tipoDado, string comparador) {
+int Loja::getQuantidadeProduto(int tipoProduto, int tipoDado, string comparador) {
+  return quantidadeProdutoArr[tipoProduto](this, tipoDado, comparador);
+}
+
+string Loja::visualizarProdutos(InterfaceGrafica interfaceGrafica, int tipoProduto, int tipoDado, string comparador) {
+  int quantProduto = this->getQuantidadeProduto(tipoProduto, tipoDado, comparador);
+
+  string tipos[] = {"PROCESSADORES",
+                    "PLACAS MÃE",
+                    "MEMÓRIAS RAM",
+                    "PLACAS DE VÍDEO",
+                    "MEMÓRIAS SECUNDÁRIAS",
+                    "GABINETES",
+                    "FONTES DE ALIMENTAÇÃO"};
+
+  if (quantProduto == 0) {
+    interfaceGrafica.limparTela();
+    interfaceGrafica.setTelas(1);
+    interfaceGrafica.renderTela();
+
+    interfaceGrafica.renderTexto(
+      0,
+      vector<dadosTexto> {
+        { "    _/_/_/      _/_/_/          _/          _/  " },
+        { "   _/    _/  _/                _/          _/   " },
+        { "  _/_/_/    _/            _/_/_/_/_/  _/_/_/_/_/" },
+        { " _/        _/                _/          _/     " },
+        { "_/          _/_/_/          _/          _/      " }
+      },
+      MEIO
+    );
+
+    interfaceGrafica.renderTexto(
+      0,
+      vector<dadosTexto> {
+        { "Infelizmente não há nenhum Produto Disponível." },
+        { "" },
+        { "Retornando em 5 Segundos..." }
+      },
+      MEIO,
+      MEIO
+    );
+
+    Sleep(5000);
+    return "";
+  }
+
+  int quantExibir = interfaceGrafica.getLinhas() - 10;
+  int paginaAtual = 1;
+  int totalPaginas = static_cast<int>(ceil(static_cast<float>(quantProduto) / quantExibir));
+
+  int indice = 0;
+  vector<int> indicesAntigos = {};
+
+  while (true) {
+    vector<dadosTexto> textosNavegaveis = {
+      { "Quantidade de Produtos Encontrados: " + to_string(quantProduto) },
+      { "" }
+    };
+
+    vector<vector<string>> textosAuxiliares;
+    interfaceGrafica.limparTela();
+    interfaceGrafica.setTelas(vector<dadosTela>{{tipos[tipoProduto], 1}, {"PRODUTO", 1}});
+    interfaceGrafica.renderTela();
+
+    dadosImprimir dadosImp = this->imprimirEstoque(tipoProduto, quantExibir, indice, tipoDado, comparador);
+
+    for (unsigned i = 0; i < dadosImp.produtosListados.size(); i++) {
+      textosNavegaveis.push_back({
+        dadosImp.produtosListados[i][0][0],
+        true
+      });
+
+      textosAuxiliares.push_back(
+        dadosImp.produtosListados[i][1]
+      );
+    }
+
+    interfaceGrafica.setTextosAuxiliares(textosAuxiliares);
+
+    interfaceGrafica.renderTexto(
+      0,
+      textosNavegaveis
+    );
+
+    interfaceGrafica.renderTexto(
+      0,
+      vector<dadosTexto> {
+          dadosTexto {
+            to_string(paginaAtual) + " / " +
+            to_string(totalPaginas)
+          },
+          dadosTexto { "" },
+          dadosTexto { "▲ Mover Para Cima / ▼ Mover para Baixo" }
+      },
+      MEIO,
+      FIM
+    );
+
+    int resultadoNavegar = interfaceGrafica.navegar(true, true);
+
+    if (resultadoNavegar == -2 && paginaAtual < totalPaginas) {
+      paginaAtual++;
+      indicesAntigos.push_back(indice);
+      indice = dadosImp.lastIndex;
+    } else if (resultadoNavegar == -1 && paginaAtual > 1) {
+      paginaAtual--;
+      indice = indicesAntigos[indicesAntigos.size() - 1];
+      indicesAntigos.pop_back();
+    } else if (resultadoNavegar >= 0) {
+      string strRetorno = textosAuxiliares[resultadoNavegar][2];
+      strRetorno.erase(0, 4);
+      return strRetorno;
+    }
+
+    continue;
+  }
+}
+
+dadosImprimir Loja::imprimirEstoque(int tipoProduto, int quantProdutos, int indexInicio, int tipoDado, string comparador) {
   this->ordenarPorPreco();
-  return imprimirProdutoArr[tipoProduto](this, tipoDado, comparador);
+  return imprimirProdutoArr[tipoProduto](this, quantProdutos, indexInicio, tipoDado, comparador);
 }
 
 void Loja::serializar(Produto *produto, ostream &os) {
@@ -136,7 +260,7 @@ void Loja::desserializar(Produto **produto, istream &is) {
 }
 
 bool Loja::escreverEstoque() {
-  ofstream arquivoProdutos("produtos.bin", ios::out | ios::trunc | ios::binary);
+  ofstream arquivoProdutos("./binarios/produtos.bin", ios::out | ios::trunc | ios::binary);
 
   if (arquivoProdutos.is_open()) {
     for (unsigned i = 0; i < produtos.size(); i++)
@@ -150,7 +274,7 @@ bool Loja::escreverEstoque() {
 }
 
 bool Loja::escreverClientes() {
-  ofstream arquivoClientes("clientes.bin", ios::out | ios::trunc | ios::binary);
+  ofstream arquivoClientes("./binarios/clientes.bin", ios::out | ios::trunc | ios::binary);
 
   if (arquivoClientes.is_open()) {
     for (unsigned i = 0; i < clientes.size(); i++)
@@ -164,10 +288,10 @@ bool Loja::escreverClientes() {
 }
 
 bool Loja::escreverAdministradores() {
-  ofstream arquivoAdministradores("administradores.bin", ios::out | ios::trunc | ios::binary);
+  ofstream arquivoAdministradores("./binarios/administradores.bin", ios::out | ios::trunc | ios::binary);
 
   if (arquivoAdministradores.is_open()) {
-    for (unsigned i = 0; i < clientes.size(); i++)
+    for (unsigned i = 0; i < administradores.size(); i++)
       administradores[i].serializar(arquivoAdministradores);
 
     arquivoAdministradores.close();
@@ -178,7 +302,7 @@ bool Loja::escreverAdministradores() {
 }
 
 bool Loja::lerEstoque() {
-  ifstream arquivoProdutos("produtos.bin", ios::in | ios::binary);
+  ifstream arquivoProdutos("./binarios/produtos.bin", ios::in | ios::binary);
 
   if (arquivoProdutos.is_open()) {
     while(!arquivoProdutos.eof()) {
@@ -198,7 +322,7 @@ bool Loja::lerEstoque() {
 }
 
 bool Loja::lerClientes() {
-  ifstream arquivoClientes("clientes.bin", ios::in | ios::binary);
+  ifstream arquivoClientes("./binarios/clientes.bin", ios::in | ios::binary);
 
   if (arquivoClientes.is_open()) {
     while(!arquivoClientes.eof()) {
@@ -218,7 +342,7 @@ bool Loja::lerClientes() {
 }
 
 bool Loja::lerAdministradores() {
-  ifstream arquivoAdministradores("administradores.bin", ios::in | ios::binary);
+  ifstream arquivoAdministradores("./binarios/administradores.bin", ios::in | ios::binary);
 
   if (arquivoAdministradores.is_open()) {
     while(!arquivoAdministradores.eof()) {
@@ -228,6 +352,7 @@ bool Loja::lerAdministradores() {
       if (arquivoAdministradores.eof()) break;
 
       administradores.push_back(administrador);
+
     }
 
     arquivoAdministradores.close();

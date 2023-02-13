@@ -1,4 +1,5 @@
 #include "PlacaDeVideo.h"
+#include <string>
 
 // Métodos de sobrecarga do construtor
 PlacaDeVideo::PlacaDeVideo(
@@ -79,10 +80,17 @@ unsigned short int PlacaDeVideo::getBits() const {
 }
 
 // Métodos da classe
-void PlacaDeVideo::imprimirProduto() {
-  Produto::imprimirProduto();
-  cout << "  | Memória: " << memoria << "\n";
-  cout << "  | DDR: " << tipoMemoria << "\n";
-  cout << "  | Frequência: " << frequencia << "\n";
-  cout << "  | Bits: " << bits << "\n\n";
+vector<vector<string>> PlacaDeVideo::imprimirProduto() {
+  vector<vector<string>> dadosProduto = Produto::imprimirProduto();
+
+  dadosProduto[1].insert(
+    dadosProduto[1].end(),
+    {
+      "Quantidade de VRAM: " + to_string(memoria) + "GB",
+      "Tipo de VRAM: " + tipoMemoria,
+      "Frequência: " + to_string(frequencia) + "MHz",
+      "Bits: " + to_string(bits)
+    }
+  );
+  return dadosProduto;
 }

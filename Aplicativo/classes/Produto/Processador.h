@@ -45,7 +45,7 @@ class Processador: public Produto {
     string getSocket() const;
 
     // Métodos da classe
-    virtual void imprimirProduto() override;
+    virtual vector<vector<string>> imprimirProduto() override;
 };
 
 #endif

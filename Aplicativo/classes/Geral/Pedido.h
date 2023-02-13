@@ -8,8 +8,10 @@
 #include <vector>
 #include <ctime>
 
-#include "Produto.h"
-#include "Cliente.h"
+#include "InterfaceGrafica.h"
+
+#include "../Produto/Produto.h"
+#include "../Usuario/Cliente.h"
 
 using namespace std;
 
@@ -45,13 +47,12 @@ class Pedido {
     float getPrecoTotal() const;
     string getData() const;
     string getPagamento() const;
-    string getCupom() const;
 
     // Métodos da classe
     Produto* getItem(int indice);
     bool adicionarItens(Produto produto, int quantidade);
     bool removerItens(Produto produto, int quantidade);
-    void imprimirPedido();
+    int imprimirPedido(InterfaceGrafica interfaceGrafica, bool navegar = false);
     vector<Produto> realizarPedido(Cliente* cliente, string pagamento);
 };
 

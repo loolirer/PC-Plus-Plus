@@ -6,17 +6,19 @@
 #include <unordered_map>
 #include <functional>
 
-#include "Produto.h"
-#include "Processador.h"
-#include "PlacaMae.h"
-#include "MemoriaRAM.h"
-#include "PlacaDeVideo.h"
-#include "MemoriaSecundaria.h"
-#include "Gabinete.h"
-#include "FonteDeAlimentacao.h"
+#include "../Produto/Produto.h"
+#include "../Produto/Processador.h"
+#include "../Produto/PlacaMae.h"
+#include "../Produto/MemoriaRAM.h"
+#include "../Produto/PlacaDeVideo.h"
+#include "../Produto/MemoriaSecundaria.h"
+#include "../Produto/Gabinete.h"
+#include "../Produto/FonteDeAlimentacao.h"
 
-#include "Cliente.h"
-#include "Administrador.h"
+#include "../Usuario/Cliente.h"
+#include "../Usuario/Administrador.h"
+
+#include "InterfaceGrafica.h"
 
 enum tiposDeProdutos {
   PROCESSADOR,
@@ -35,9 +37,15 @@ enum verificarDados {
   FONTEFATORFORMA
 };
 
-struct SerializeData final{
+struct SerializeData final {
   size_t size;
   void *padrao;
+};
+
+struct dadosImprimir {
+  int initIndex;
+  int lastIndex;
+  vector<vector<vector<string>>> produtosListados;
 };
 
 class Loja {
@@ -52,24 +60,53 @@ class Loja {
     }
 
     template <typename T>
-    static vector<string> imprimirProduto(Loja* self, int tipoDado = -1, string comparador = "") {
-      vector<string> produtosListados;
-      int index = 1;
+    static int quantidadeProduto(Loja* self, int tipoDado = -1, string comparador = "") {
+      int index = 0;
 
-      for (auto produtoBase: self->produtos) {
-        if (T *produto = dynamic_cast<T*>(produtoBase)) {
+      for (auto produtoBase: self->produtos)
+        if (T *produto = dynamic_cast<T*>(produtoBase))
           if (tipoDado == -1 || self->verificarDadoArr[tipoDado](produto, comparador)) {
-            cout << index++ << ". ";
-            produto->imprimirProduto();
-            produtosListados.push_back(produto->getID());
+            index++;
+          }
+
+      return index;
+    }
+
+    template <typename T>
+    static dadosImprimir imprimirProduto(Loja* self, int quantProdutos, int indexInicio = 0, int tipoDado = -1, string comparador = "") {
+      vector<vector<vector<string>>> produtosListados;
+
+      int indexNova = 0;
+
+      for (int i = indexInicio, j = 0; i < self->produtos.size() && j < quantProdutos; i++) {
+        if (j == quantProdutos - 1) indexNova = i;
+
+        if (T *produto = dynamic_cast<T*>(self->produtos[i])) {
+          if (tipoDado == -1 || self->verificarDadoArr[tipoDado](produto, comparador)) {
+            j++;
+            produtosListados.push_back(produto->imprimirProduto());
           }
         }
       }
 
-      return produtosListados;
+      return {
+        indexInicio,
+        indexNova + 1,
+        produtosListados
+      };
     }
 
-    function<vector<string>(Loja*, int, string)> imprimirProdutoArr[7] = {
+    function<int(Loja*, int, string)> quantidadeProdutoArr[7] = {
+      quantidadeProduto<Processador>,
+      quantidadeProduto<PlacaMae>,
+      quantidadeProduto<MemoriaRAM>,
+      quantidadeProduto<PlacaDeVideo>,
+      quantidadeProduto<MemoriaSecundaria>,
+      quantidadeProduto<Gabinete>,
+      quantidadeProduto<FonteDeAlimentacao>
+    };
+
+    function<dadosImprimir(Loja*, int, int, int, string)> imprimirProdutoArr[7] = {
       imprimirProduto<Processador>,
       imprimirProduto<PlacaMae>,
       imprimirProduto<MemoriaRAM>,
@@ -79,7 +116,7 @@ class Loja {
       imprimirProduto<FonteDeAlimentacao>
     };
 
-    unordered_map<std::string, SerializeData> mapSerializar = {
+    unordered_map<string, SerializeData> mapSerializar = {
       genSerialize<Processador>(),
       genSerialize<PlacaMae>(),
       genSerialize<MemoriaRAM>(),
@@ -133,7 +170,9 @@ class Loja {
     Administrador* loginAdministrador(string email, string senha);
 
     void ordenarPorPreco();
-    vector<string> imprimirEstoque(int tipoProduto, int tipoDado = -1, string comparador = "");
+    int getQuantidadeProduto(int tipoProduto, int tipoDado = -1, string comparador = "");
+    string visualizarProdutos(InterfaceGrafica interfaceGrafica, int tipoProduto, int tipoDado = -1, string comparador = "");
+    dadosImprimir imprimirEstoque(int tipoProduto, int quantProdutos, int indexInicio = 0, int tipoDado = -1, string comparador = "");
 
     bool escreverEstoque();
     bool escreverClientes();

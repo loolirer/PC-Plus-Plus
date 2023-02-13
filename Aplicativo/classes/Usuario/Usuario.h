@@ -1,7 +1,7 @@
 #ifndef Usuario_H
 #define Usuario_H
 
-#include "Serializador.h"
+#include "../Geral/Serializador.h"
 
 class Usuario: public Serializador {
   private:

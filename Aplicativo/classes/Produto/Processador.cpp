@@ -1,4 +1,5 @@
 #include "Processador.h"
+#include <sstream>
 
 // Métodos de sobrecarga do construtor
 Processador::Processador(
@@ -79,10 +80,20 @@ string Processador::getSocket() const {
 }
 
 // Métodos da classe
-void Processador::imprimirProduto() {
-  Produto::imprimirProduto();
-  cout << "  | Cores: " << cores << "\n";
-  cout << "  | Threads: " << threads << "\n";
-  cout << "  | Frequencia: " << frequencia << "\n";
-  cout << "  | Socket: " << socket << "\n\n";
+vector<vector<string>> Processador::imprimirProduto() {
+  vector<vector<string>> dadosProduto = Produto::imprimirProduto();
+
+  stringstream frequenciaStream;
+  frequenciaStream << fixed << setprecision(2) << frequencia;
+
+  dadosProduto[1].insert(
+    dadosProduto[1].end(),
+    {
+      "Quantidade de Núcleos: " + to_string(cores),
+      "Quantidade de Threads: " + to_string(threads),
+      "Frequência: " + frequenciaStream.str() + "GHz",
+      "Socket: " + socket
+    }
+  );
+  return dadosProduto;
 }

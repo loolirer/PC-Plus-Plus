@@ -55,8 +55,15 @@ string FonteDeAlimentacao::getFatorForma() const {
 }
 
 // Métodos da classe
-void FonteDeAlimentacao::imprimirProduto() {
-  Produto::imprimirProduto();
-  cout << "  | Potência: " << potencia << "\n";
-  cout << "  | Fator Forma: " << fatorForma << "\n\n";
+vector<vector<string>> FonteDeAlimentacao::imprimirProduto() {
+  vector<vector<string>> dadosProduto = Produto::imprimirProduto();
+
+  dadosProduto[1].insert(
+    dadosProduto[1].end(),
+    { 
+      "Potência: " + to_string(potencia) + "W", 
+      "Fator Forma: " + fatorForma 
+      }
+    );
+  return dadosProduto;
 }

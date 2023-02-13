@@ -1,4 +1,5 @@
 #include "MemoriaRAM.h"
+#include <string>
 
 // Métodos de sobrecarga do construtor
 MemoriaRAM::MemoriaRAM(
@@ -67,9 +68,16 @@ string MemoriaRAM::getDDR() const {
 }
 
 // Métodos da classe
-void MemoriaRAM::imprimirProduto() {
-  Produto::imprimirProduto();
-  cout << "  | Capacidade: " << capacidade << "\n";
-  cout << "  | Frequencia: " << frequencia << "\n";
-  cout << "  | DDR: " << DDR << "\n\n";
+vector<vector<string>> MemoriaRAM::imprimirProduto() {
+  vector<vector<string>> dadosProduto = Produto::imprimirProduto();
+
+  dadosProduto[1].insert(
+    dadosProduto[1].end(),
+    { 
+      "Capacidade: " + to_string(capacidade) + "GB",
+      "Frequência: " + to_string(frequencia) + "MHz",
+      "Tipo Memória: " + DDR
+    }
+  );
+  return dadosProduto;
 }

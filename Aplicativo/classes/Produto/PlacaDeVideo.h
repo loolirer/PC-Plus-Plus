@@ -45,7 +45,7 @@ class PlacaDeVideo: public Produto {
     unsigned short int getBits() const;
 
     // Métodos da classe
-    virtual void imprimirProduto() override;
+    virtual vector<vector<string>> imprimirProduto() override;
 };
 
 #endif

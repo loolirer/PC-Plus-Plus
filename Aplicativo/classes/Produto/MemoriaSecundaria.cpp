@@ -1,4 +1,5 @@
 #include "MemoriaSecundaria.h"
+#include <string>
 
 // Métodos de sobrecarga do construtor
 MemoriaSecundaria::MemoriaSecundaria(
@@ -54,8 +55,15 @@ int MemoriaSecundaria::getCapacidade() const {
 }
 
 // Métodos da classe
-void MemoriaSecundaria::imprimirProduto() {
-  Produto::imprimirProduto();
-  cout << "  | Tipo: " << tipo << "\n";
-  cout << "  | Capacidade: " << capacidade << "\n\n";
+vector<vector<string>> MemoriaSecundaria::imprimirProduto() {
+  vector<vector<string>> dadosProduto = Produto::imprimirProduto();
+
+  dadosProduto[1].insert(
+    dadosProduto[1].end(),
+    { 
+      "Tipo: " + tipo, 
+      "Capacidade: " + to_string(capacidade) + "GB"
+    }
+  );
+  return dadosProduto;
 }

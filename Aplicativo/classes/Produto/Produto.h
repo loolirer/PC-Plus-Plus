@@ -1,8 +1,9 @@
 #ifndef Produto_H
 #define Produto_H
 
-#include "Serializador.h"
+#include "../Geral/Serializador.h"
 #include <iostream>
+#include <vector>
 
 class Produto: public Serializador {
   private:
@@ -45,7 +46,7 @@ class Produto: public Serializador {
     int getQuantidade() const;
 
     // Métodos da classe
-    virtual void imprimirProduto();
+    virtual vector<vector<string>> imprimirProduto();
 };
 
 #endif

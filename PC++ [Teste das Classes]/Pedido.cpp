@@ -2,15 +2,6 @@
 
 // Métodos de sobrecarga do construtor
 Pedido::Pedido() {
-  this->cliente = nullptr;
-  setPrecoTotal(0.0);
-  setData("Pedido em Andamento");
-  setPagamento("Pendente");
-  setCupom("Pedido Incompleto");
-}
-
-Pedido::Pedido(Cliente* cliente) {
-  this->cliente = cliente;
   setPrecoTotal(0.0);
   setData("Pedido em Andamento");
   setPagamento("Pendente");
@@ -18,9 +9,7 @@ Pedido::Pedido(Cliente* cliente) {
 }
 
 // Método do destrutor
-Pedido::~Pedido() {
-  cout << "Objeto Pedido Destruido!" << endl;
-}
+Pedido::~Pedido() {}
 
 // Métodos de modificação dos atributos
 void Pedido::setPrecoTotal(float precoTotal) {
@@ -40,20 +29,20 @@ void Pedido::setCupom(string cupom) {
 }
 
 // Métodos de retorno dos atributos
-float Pedido::getPrecoTotal() {
-  return this->precoTotal;
+float Pedido::getPrecoTotal() const {
+  return precoTotal;
 }
 
-string Pedido::getData() {
-  return this->data;
+string Pedido::getData() const {
+  return data;
 }
 
-string Pedido::getPagamento() {
-  return this->pagamento;
+string Pedido::getPagamento() const {
+  return pagamento;
 }
 
-string Pedido::getCupom() {
-  return this->cupom;
+string Pedido::getCupom() const {
+  return cupom;
 }
 
 // Funções utilitárias
@@ -79,8 +68,7 @@ void Pedido::atualizarData() {
 	data = string(ctime(&now)).substr(0, 24);
 }
 
-void Pedido::gerarCupom()
-{
+void Pedido::gerarCupom() {
   stringstream buffer;
 
   if (itens.size() == 0) {
@@ -143,11 +131,6 @@ void Pedido::gerarCupom()
   cupom = buffer.str();
 }
 
-void Pedido::imprimirPedido() {
-  gerarCupom();
-  cout << cupom;
-}
-
 // Métodos da classe
 bool Pedido::adicionarItens(Produto produto, int quantidade) {
   int i = procurarItem(produto);
@@ -185,8 +168,12 @@ bool Pedido::removerItens(Produto produto, int quantidade) {
   }
 }
 
-bool Pedido::realizarPedido(string pagamento)
-{
+void Pedido::imprimirPedido() {
+  gerarCupom();
+  cout << cupom;
+}
+
+bool Pedido::realizarPedido(Cliente* cliente, string pagamento) {
   setPagamento(pagamento);
   atualizarData();
   gerarCupom();

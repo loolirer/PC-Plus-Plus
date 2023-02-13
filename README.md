@@ -5,11 +5,11 @@ Esse repositório é dedicado ao desenvolvimento do projeto final da matéria de
 O projeto tem como objetivo a criação de um aplicativo em C++ que simula o controle de estoque e ambiente de compra de uma loja de peças de computadores.
 
 Os integrantes desse projeto são:
-- Ana Júlia Fernandes de Brito Ameno (@anajufba)
+- Ana Júlia Fernandes de Brito Ameno ([@anajufba](https://github.com/anajufba))
 - Joab da Silva Bezerra
-- Lorenzo Carrera de Oliveira (@loolirer)
-- Nívea Calébia Félix dos Santos
-- Vitor Hugo Gomes Alexandre Amaro (@vitorhugobrn)
+- Lorenzo Carrera de Oliveira ([@loolirer](https://github.com/loolirer))
+- Nívea Calébia Félix dos Santos ([@Calebia](https://github.com/Calebia))
+- Vitor Hugo Gomes Alexandre Amaro ([@vitorhugobrn](https://github.com/vitorhugobrn))
 
 O projeto foi monitorado por Gustavo Figueiredo e apresentado ao professor Marcus Salerno de Aquino em 2022.
 

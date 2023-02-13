@@ -6,7 +6,7 @@ O projeto tem como objetivo a criação de um aplicativo em C++ que simula o con
 
 Os integrantes desse projeto são:
 - Ana Júlia Fernandes de Brito Ameno ([@anajufba](https://github.com/anajufba))
-- Joab da Silva Bezerra
+- Joab da Silva Bezerra ([@joabzicg](https://github.com/joabzicg))
 - Lorenzo Carrera de Oliveira ([@loolirer](https://github.com/loolirer))
 - Nívea Calébia Félix dos Santos ([@Calebia](https://github.com/Calebia))
 - Vitor Hugo Gomes Alexandre Amaro ([@vitorhugobrn](https://github.com/vitorhugobrn))

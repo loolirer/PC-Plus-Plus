@@ -111,6 +111,7 @@ void Loja::ordenarPorPreco() {
 }
 
 vector<string> Loja::imprimirEstoque(int tipoProduto, int tipoDado, string comparador) {
+  this->ordenarPorPreco();
   return imprimirProdutoArr[tipoProduto](this, tipoDado, comparador);
 }
 

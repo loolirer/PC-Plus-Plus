@@ -8,7 +8,7 @@ Loja::Loja() {
 }
 
 Loja::~Loja() {
-  CreateDirectory("binarios", NULL);
+  CreateDirectory("Binarios", NULL);
 
   escreverEstoque();
   escreverClientes();
@@ -260,7 +260,7 @@ void Loja::desserializar(Produto **produto, istream &is) {
 }
 
 bool Loja::escreverEstoque() {
-  ofstream arquivoProdutos("./binarios/produtos.bin", ios::out | ios::trunc | ios::binary);
+  ofstream arquivoProdutos("./Binarios/produtos.bin", ios::out | ios::trunc | ios::binary);
 
   if (arquivoProdutos.is_open()) {
     for (unsigned i = 0; i < produtos.size(); i++)
@@ -274,7 +274,7 @@ bool Loja::escreverEstoque() {
 }
 
 bool Loja::escreverClientes() {
-  ofstream arquivoClientes("./binarios/clientes.bin", ios::out | ios::trunc | ios::binary);
+  ofstream arquivoClientes("./Binarios/clientes.bin", ios::out | ios::trunc | ios::binary);
 
   if (arquivoClientes.is_open()) {
     for (unsigned i = 0; i < clientes.size(); i++)
@@ -288,7 +288,7 @@ bool Loja::escreverClientes() {
 }
 
 bool Loja::escreverAdministradores() {
-  ofstream arquivoAdministradores("./binarios/administradores.bin", ios::out | ios::trunc | ios::binary);
+  ofstream arquivoAdministradores("./Binarios/administradores.bin", ios::out | ios::trunc | ios::binary);
 
   if (arquivoAdministradores.is_open()) {
     for (unsigned i = 0; i < administradores.size(); i++)
@@ -302,7 +302,7 @@ bool Loja::escreverAdministradores() {
 }
 
 bool Loja::lerEstoque() {
-  ifstream arquivoProdutos("./binarios/produtos.bin", ios::in | ios::binary);
+  ifstream arquivoProdutos("./Binarios/produtos.bin", ios::in | ios::binary);
 
   if (arquivoProdutos.is_open()) {
     while(!arquivoProdutos.eof()) {
@@ -322,7 +322,7 @@ bool Loja::lerEstoque() {
 }
 
 bool Loja::lerClientes() {
-  ifstream arquivoClientes("./binarios/clientes.bin", ios::in | ios::binary);
+  ifstream arquivoClientes("./Binarios/clientes.bin", ios::in | ios::binary);
 
   if (arquivoClientes.is_open()) {
     while(!arquivoClientes.eof()) {
@@ -342,7 +342,7 @@ bool Loja::lerClientes() {
 }
 
 bool Loja::lerAdministradores() {
-  ifstream arquivoAdministradores("./binarios/administradores.bin", ios::in | ios::binary);
+  ifstream arquivoAdministradores("./Binarios/administradores.bin", ios::in | ios::binary);
 
   if (arquivoAdministradores.is_open()) {
     while(!arquivoAdministradores.eof()) {

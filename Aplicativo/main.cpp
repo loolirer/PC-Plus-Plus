@@ -1,22 +1,22 @@
 #include <Windows.h>
 
-#include "./classes/Geral/Serializador.cpp"
-#include "./classes/Geral/Loja.cpp"
-#include "./classes/Geral/Pedido.cpp"
-#include "./classes/Geral/InterfaceGrafica.cpp"
+#include "./Classes/Geral/Serializador.cpp"
+#include "./Classes/Geral/Loja.cpp"
+#include "./Classes/Geral/Pedido.cpp"
+#include "./Classes/Geral/InterfaceGrafica.cpp"
 
-#include "./classes/Produto/Produto.cpp"
-#include "./classes/Produto/Processador.cpp"
-#include "./classes/Produto/PlacaMae.cpp"
-#include "./classes/Produto/MemoriaRAM.cpp"
-#include "./classes/Produto/FonteDeAlimentacao.cpp"
-#include "./classes/Produto/PlacaDeVideo.cpp"
-#include "./classes/Produto/MemoriaSecundaria.cpp"
-#include "./classes/Produto/Gabinete.cpp"
+#include "./Classes/Produto/Produto.cpp"
+#include "./Classes/Produto/Processador.cpp"
+#include "./Classes/Produto/PlacaMae.cpp"
+#include "./Classes/Produto/MemoriaRAM.cpp"
+#include "./Classes/Produto/FonteDeAlimentacao.cpp"
+#include "./Classes/Produto/PlacaDeVideo.cpp"
+#include "./Classes/Produto/MemoriaSecundaria.cpp"
+#include "./Classes/Produto/Gabinete.cpp"
 
-#include "./classes/Usuario/Usuario.cpp"
-#include "./classes/Usuario/Administrador.cpp"
-#include "./classes/Usuario/Cliente.cpp"
+#include "./Classes/Usuario/Usuario.cpp"
+#include "./Classes/Usuario/Administrador.cpp"
+#include "./Classes/Usuario/Cliente.cpp"
 
 int main() {
   system("mode con: cols=100 lines=30"); // Define o tamanho da janela do CMD

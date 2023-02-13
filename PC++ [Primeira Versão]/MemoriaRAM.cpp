@@ -9,7 +9,7 @@ MemoriaRAM::MemoriaRAM(
   int quantidade,
   int capacidade,
   int frequencia,
-  int DDR
+  string DDR
 ): Produto(
   modelo,
   marca,
@@ -30,14 +30,14 @@ void MemoriaRAM::serializar(ostream &os) {
   Produto::serializar(os);
   serializarAny(os, capacidade);
   serializarAny(os, frequencia);
-  serializarAny(os, DDR);
+  serializarString(os, DDR);
 }
 
 void MemoriaRAM::desserializar(istream &is) {
   Produto::desserializar(is);
   setCapacidade(desserializarAny<int>(is));
   setFrequencia(desserializarAny<int>(is));
-  setDDR(desserializarAny<int>(is));
+  desserializarString(is, DDR);
 }
 
 // Métodos de modificação dos atributos
@@ -49,7 +49,7 @@ void MemoriaRAM::setFrequencia(int frequencia) {
   this->frequencia = frequencia;
 }
 
-void MemoriaRAM::setDDR(int DDR) {
+void MemoriaRAM::setDDR(string DDR) {
   this->DDR = DDR;
 }
 
@@ -62,14 +62,14 @@ int MemoriaRAM::getFrequencia() const {
   return frequencia;
 }
 
-int MemoriaRAM::getDDR() const {
+string MemoriaRAM::getDDR() const {
   return DDR;
 }
 
 // Métodos da classe
 void MemoriaRAM::imprimirProduto() {
   Produto::imprimirProduto();
-  cout << "  | Capacidade: " << capacidade << endl;
-  cout << "  | Frequencia: " << frequencia << endl;
-  cout << "  | DDR: " << DDR << endl;
+  cout << "  | Capacidade: " << capacidade << "\n";
+  cout << "  | Frequencia: " << frequencia << "\n";
+  cout << "  | DDR: " << DDR << "\n\n";
 }

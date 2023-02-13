@@ -74,7 +74,8 @@ void Pedido::gerarCupom() {
   if (itens.size() == 0) {
     buffer << "Pedido Vazio!" << endl;
   } else {
-    buffer << setiosflags(ios::left)
+    buffer << fixed << setprecision(2)
+           << setiosflags(ios::left)
            << setw(28)
            << "> " + data
            << setiosflags(ios::right)
@@ -91,7 +92,7 @@ void Pedido::gerarCupom() {
            << setiosflags(ios::right)
            << setw(10)
            << "Quantidade"
-           << setw(19)
+           << setw(20)
            << "Valor Unitário"
            << setw(11)
            << "Subtotal"
@@ -101,9 +102,15 @@ void Pedido::gerarCupom() {
            << resetiosflags(ios::right);
 
     for (int i = 0; i < itens.size(); i++) {
+
+      string modelo = to_string(i + 1) + ". " + itens[i].getMarca() + " " + itens[i].getModelo();
+
+      if(modelo.size() >= 29)
+        modelo = modelo.substr(0, 26) + "...";
+
       buffer << setiosflags(ios::left)
              << setw(30)
-             << to_string(i + 1) + ". " + itens[i].getMarca() + " " + itens[i].getModelo()
+             << modelo
              << setiosflags(ios::right)
              << setw(10)
              << itens[i].getQuantidade()
@@ -117,10 +124,10 @@ void Pedido::gerarCupom() {
     calcularTotal();
     buffer << string(70, '_')
            << endl << endl
-           << setw(46)
+           << setw(51)
            << "Método de Pagamento: " + pagamento
            << setiosflags(ios::right)
-           << setw(13)
+           << setw(9)
            << "Total R$"
            << setw(11)
            << precoTotal
@@ -132,6 +139,13 @@ void Pedido::gerarCupom() {
 }
 
 // Métodos da classe
+Produto* Pedido::getItem(int indice)
+{
+  if(indice >= 0  && indice < itens.size())
+    return &itens[indice];
+  return nullptr;
+}
+
 bool Pedido::adicionarItens(Produto produto, int quantidade) {
   int i = procurarItem(produto);
 
@@ -173,10 +187,11 @@ void Pedido::imprimirPedido() {
   cout << cupom;
 }
 
-bool Pedido::realizarPedido(Cliente* cliente, string pagamento) {
+vector<Produto> Pedido::realizarPedido(Cliente* cliente, string pagamento) {
   setPagamento(pagamento);
   atualizarData();
   gerarCupom();
   cliente->setSaldo(cliente->getSaldo() + precoTotal);
-  return true;
+
+  return itens;
 }

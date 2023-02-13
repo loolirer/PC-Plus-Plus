@@ -10,7 +10,6 @@ Processador::Processador(
   int cores,
   int threads,
   float frequencia,
-  int cache,
   string socket
 ): Produto(
   modelo,
@@ -22,7 +21,6 @@ Processador::Processador(
   setCores(cores);
   setThreads(threads);
   setFrequencia(frequencia);
-  setCache(cache);
   setSocket(socket);
 }
 
@@ -35,7 +33,6 @@ void Processador::serializar(ostream &os) {
   serializarAny(os, cores);
   serializarAny(os, threads);
   serializarAny(os, frequencia);
-  serializarAny(os, cache);
   serializarString(os, socket);
 }
 
@@ -44,7 +41,6 @@ void Processador::desserializar(istream &is) {
   setCores(desserializarAny<int>(is));
   setThreads(desserializarAny<int>(is));
   setFrequencia(desserializarAny<float>(is));
-  setCache(desserializarAny<int>(is));
   desserializarString(is, socket);
 }
 
@@ -59,10 +55,6 @@ void Processador::setThreads(int threads) {
 
 void Processador::setFrequencia(float frequencia) {
   this->frequencia = frequencia;
-}
-
-void Processador::setCache(int cache) {
-  this->cache = cache;
 }
 
 void Processador::setSocket(string socket) {
@@ -82,10 +74,6 @@ float Processador::getFrequencia() const {
   return frequencia;
 }
 
-int Processador::getCache() const {
-  return cache;
-}
-
 string Processador::getSocket() const {
   return socket;
 }
@@ -93,9 +81,8 @@ string Processador::getSocket() const {
 // Métodos da classe
 void Processador::imprimirProduto() {
   Produto::imprimirProduto();
-  cout << "  | Cores: " << cores << endl;
-  cout << "  | Threads: " << threads << endl;
-  cout << "  | Frequencia: " << frequencia << endl;
-  cout << "  | Cache: " << cache << endl;
-  cout << "  | Socket: " << socket << endl << endl;
+  cout << "  | Cores: " << cores << "\n";
+  cout << "  | Threads: " << threads << "\n";
+  cout << "  | Frequencia: " << frequencia << "\n";
+  cout << "  | Socket: " << socket << "\n\n";
 }

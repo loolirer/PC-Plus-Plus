@@ -1,5 +1,5 @@
-#ifndef LOJA_H
-#define LOJA_H
+#ifndef Loja_H
+#define Loja_H
 
 #include <vector>
 #include <typeinfo>
@@ -18,8 +18,6 @@
 #include "Cliente.h"
 #include "Administrador.h"
 
-using namespace std;
-
 enum tiposDeProdutos {
   PROCESSADOR,
   PLACAMAE,
@@ -28,6 +26,13 @@ enum tiposDeProdutos {
   MEMORIASECUNDARIA,
   GABINETE,
   FONTEDEALIMENTACAO
+};
+
+enum verificarDados {
+  PROCESSADORSOCKET,
+  DDR,
+  GABINETEFATORFORMA,
+  FONTEFATORFORMA
 };
 
 struct SerializeData final{
@@ -43,26 +48,28 @@ class Loja {
 
     template <typename T>
     pair<string, SerializeData> genSerialize(){
-      return {typeid(T).name(), {sizeof(T), new T{}}};
+      return { typeid(T).name(), { sizeof(T), new T{} } };
     }
 
     template <typename T>
-    static vector<string> imprimirProduto(Loja* self) {
+    static vector<string> imprimirProduto(Loja* self, int tipoDado = -1, string comparador = "") {
       vector<string> produtosListados;
       int index = 1;
-      
+
       for (auto produtoBase: self->produtos) {
         if (T *produto = dynamic_cast<T*>(produtoBase)) {
-          cout << index++ << ". ";
-          produto->imprimirProduto();
-          produtosListados.push_back(produto->getID());
+          if (tipoDado == -1 || self->verificarDadoArr[tipoDado](produto, comparador)) {
+            cout << index++ << ". ";
+            produto->imprimirProduto();
+            produtosListados.push_back(produto->getID());
+          }
         }
       }
 
       return produtosListados;
     }
 
-    function<vector<string>(Loja*)> imprimirProdutoArr[7] = {
+    function<vector<string>(Loja*, int, string)> imprimirProdutoArr[7] = {
       imprimirProduto<Processador>,
       imprimirProduto<PlacaMae>,
       imprimirProduto<MemoriaRAM>,
@@ -82,6 +89,29 @@ class Loja {
       genSerialize<FonteDeAlimentacao>(),
     };
 
+    function<bool(Produto*, string)> verificarDadoArr[4] = {
+      function<bool(Produto*, string)>([] (Produto* produto, string comparador) {
+        if (PlacaMae *placaMae = dynamic_cast<PlacaMae*>(produto))
+          return placaMae->getSocket() == comparador;
+        return false;
+      }),
+      function<bool(Produto*, string)>([] (Produto* produto, string comparador) {
+        if (MemoriaRAM *memoriaRAM = dynamic_cast<MemoriaRAM*>(produto))
+          return memoriaRAM->getDDR() == comparador;
+        return false;
+      }),
+      function<bool(Produto*, string)>([] (Produto* produto, string comparador) {
+        if (Gabinete *gabinete = dynamic_cast<Gabinete*>(produto))
+          return gabinete->getFatorForma() == comparador;
+        return false;
+      }),
+      function<bool(Produto*, string)>([] (Produto* produto, string comparador) {
+        if (FonteDeAlimentacao *fonteDeAlimentacao = dynamic_cast<FonteDeAlimentacao*>(produto))
+          return fonteDeAlimentacao->getFatorForma() == comparador;
+        return false;
+      })
+    };
+
     void serializar(Produto *produto, ostream &os);
 
     void desserializar(Produto **produto, istream &is);
@@ -91,14 +121,19 @@ class Loja {
     ~Loja();
 
     bool adicionarProduto(Produto* produto, int quantidade = 0);
-    bool removerProduto(string ID);
+    bool removerProduto(Produto* produto, int quantidade = 0);
+    bool removerProdutos(vector<Produto> itens);
     int procuraProduto(string ID);
+    Produto* getProduto(string ID);
 
     bool adicionarCliente(Cliente cliente);
     bool adicionarAdministrador(Administrador administrador);
 
+    Cliente* loginCliente(string email, string senha);
+    Administrador* loginAdministrador(string email, string senha);
+
     void ordenarPorPreco();
-    vector<string> imprimirEstoque(int tipoProduto);
+    vector<string> imprimirEstoque(int tipoProduto, int tipoDado = -1, string comparador = "");
 
     bool escreverEstoque();
     bool escreverClientes();

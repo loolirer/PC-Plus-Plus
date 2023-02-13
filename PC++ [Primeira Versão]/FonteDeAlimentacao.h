@@ -6,7 +6,6 @@
 class FonteDeAlimentacao: public Produto {
   private:
     // Atributos
-    int tensao;
     int potencia;
     string fatorForma;
 
@@ -18,7 +17,6 @@ class FonteDeAlimentacao: public Produto {
       string ID = "",
       float preco = 0,
       int quantidade = 0,
-      int tensao = 0,
       int potencia = 0,
       string fatorForma = ""
     );
@@ -31,12 +29,10 @@ class FonteDeAlimentacao: public Produto {
     virtual void desserializar(istream &is) override;
 
     // Métodos de modificação dos atributos
-    void setTensao(int tensao);
     void setPotencia(int potencia);
     void setFatorForma(string fatorForma);
 
     // Métodos de retorno dos atributos
-    int getTensao() const;
     int getPotencia() const;
     string getFatorForma() const;
 

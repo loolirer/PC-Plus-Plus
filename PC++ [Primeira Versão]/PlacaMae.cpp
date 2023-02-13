@@ -10,7 +10,6 @@ PlacaMae::PlacaMae(
   string plataforma,
   string socket,
   string memoria,
-  string chipset,
   string fatorForma
 ): Produto(
   modelo,
@@ -22,7 +21,6 @@ PlacaMae::PlacaMae(
   setPlataforma(plataforma);
   setSocket(socket);
   setMemoria(memoria);
-  setChipset(chipset);
   setFatorForma(fatorForma);
 }
 
@@ -32,12 +30,12 @@ PlacaMae::~PlacaMae() {}
 // Métodos de salvamento e leitura
 void PlacaMae::serializar(ostream &os) {
   Produto::serializar(os);
-  serializarString(os, { &plataforma, &socket, &memoria, &chipset, &fatorForma });
+  serializarString(os, { &plataforma, &socket, &memoria, &fatorForma });
 }
 
 void PlacaMae::desserializar(istream &is) {
   Produto::desserializar(is);
-  desserializarString(is, {&plataforma, &socket, &memoria, &chipset, &fatorForma});
+  desserializarString(is, {&plataforma, &socket, &memoria, &fatorForma});
 }
 
 // Métodos de modificação dos atributos
@@ -51,10 +49,6 @@ void PlacaMae::setSocket(string socket) {
 
 void PlacaMae::setMemoria(string memoria) {
   this->memoria = memoria;
-}
-
-void PlacaMae::setChipset(string chipset) {
-  this->chipset = chipset;
 }
 
 void PlacaMae::setFatorForma(string fatorForma) {
@@ -74,19 +68,14 @@ string PlacaMae::getMemoria() const {
   return memoria;
 }
 
-string PlacaMae::getChipset() const {
-  return chipset;
-}
-
 string PlacaMae::getFatorForma() const {
   return fatorForma;
 }
 
 void PlacaMae::imprimirProduto() {
   Produto::imprimirProduto();
-  cout << "  | Plataforma: " << plataforma << endl;
-  cout << "  | Socket: " << socket << endl;
-  cout << "  | Memoria: " << memoria << endl;
-  cout << "  | Chipset: " << chipset << endl;
-  cout << "  | Fator Forma: " << fatorForma << endl;
+  cout << "  | Plataforma: " << plataforma << "\n";
+  cout << "  | Socket: " << socket << "\n";
+  cout << "  | Memoria: " << memoria << "\n";
+  cout << "  | Fator Forma: " << fatorForma << "\n\n";
 }

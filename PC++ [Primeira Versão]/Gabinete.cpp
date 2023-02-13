@@ -8,8 +8,7 @@ Gabinete::Gabinete(
   float preco,
   int quantidade,
   string fatorForma,
-  string tamanho,
-  bool cooler
+  string tamanho
 ): Produto(
   modelo,
   marca,
@@ -19,7 +18,6 @@ Gabinete::Gabinete(
 ) {
   setFatorForma(fatorForma);
   setTamanho(tamanho);
-  setCooler(cooler);
 }
 
 // Método do destrutor
@@ -29,13 +27,11 @@ Gabinete::~Gabinete() {}
 void Gabinete::serializar(ostream &os) {
   Produto::serializar(os);
   serializarString(os, { &fatorForma, &tamanho });
-  serializarAny(os, cooler);
 }
 
 void Gabinete::desserializar(istream &is) {
   Produto::desserializar(is);
   desserializarString(is, { &fatorForma, &tamanho });
-  setCooler(desserializarAny<bool>(is));
 }
 
 // Métodos de modificação dos atributos
@@ -47,11 +43,6 @@ void Gabinete::setTamanho(string tamanho) {
   this->tamanho = tamanho;
 }
 
-void Gabinete::setCooler(bool cooler)
-{
-  this->cooler = cooler;
-}
-
 // Métodos de retorno dos atributos
 string Gabinete::getFatorForma() const {
   return fatorForma;
@@ -61,14 +52,9 @@ string Gabinete::getTamanho() const {
   return tamanho;
 }
 
-bool Gabinete::getCooler() const {
-  return cooler;
-}
-
 // Métodos da classe
 void Gabinete::imprimirProduto() {
   Produto::imprimirProduto();
-  cout << "  | Fator Forma: " << fatorForma << endl;
-  cout << "  | Tamanho: " << tamanho << endl;
-  cout << "  | Cooler: " << (cooler ? "Sim" : "Não") << endl;
+  cout << "  | Fator Forma: " << fatorForma << "\n";
+  cout << "  | Tamanho: " << tamanho << "\n\n";
 }

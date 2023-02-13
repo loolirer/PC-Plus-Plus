@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <ctime>
 
 #include "Produto.h"
 #include "Cliente.h"
@@ -47,10 +48,11 @@ class Pedido {
     string getCupom() const;
 
     // Métodos da classe
+    Produto* getItem(int indice);
     bool adicionarItens(Produto produto, int quantidade);
     bool removerItens(Produto produto, int quantidade);
     void imprimirPedido();
-    bool realizarPedido(Cliente* cliente, string pagamento);
+    vector<Produto> realizarPedido(Cliente* cliente, string pagamento);
 };
 
 #endif

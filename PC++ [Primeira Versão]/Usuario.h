@@ -2,9 +2,6 @@
 #define Usuario_H
 
 #include "Serializador.h"
-#include <string>
-
-using namespace std;
 
 class Usuario: public Serializador {
   private:
@@ -27,14 +24,14 @@ class Usuario: public Serializador {
     virtual void desserializar(istream &is);
 
     // Métodos de modificação dos atributos
-    void setEmail(string);
-    void setSenha(string);
+    void setEmail(string email);
+    void setSenha(string senha);
 
     // Métodos de retorno dos atributos
     string getEmail() const;
 
     // Métodos da classe
-    bool conferirLogin(string, string) const;
+    bool conferirLogin(string email, string senha) const;
 };
 
 #endif

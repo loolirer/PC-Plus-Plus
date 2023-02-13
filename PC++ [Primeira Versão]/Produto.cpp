@@ -72,8 +72,8 @@ int Produto::getQuantidade() const {
 
 // Métodos da classe
 void Produto::imprimirProduto() {
-  cout << marca << " " << modelo << endl;
-  cout << "  | ID: " << ID << endl;
-  cout << "  | Preço: R$" << preco << endl;
-  cout << "  | Quantidade: " << quantidade << endl;
+  cout << marca << " " << modelo << "\n";
+  cout << "  | ID: " << ID << "\n";
+  cout << "  | Preço: R$" << preco << "\n";
+  cout << "  | Quantidade: " << quantidade << "\n";
 }

@@ -1,10 +1,7 @@
 #ifndef Cliente_H
 #define Cliente_H
 
-#include <string>
 #include "Usuario.h"
-
-using namespace std;
 
 class Cliente: public Usuario {
   private:
@@ -31,9 +28,9 @@ class Cliente: public Usuario {
     virtual void desserializar(istream &is) override;
 
     // Métodos de modificação dos atributos
-    void setCpf(string);
-    void setEndereco(string);
-    void setSaldo(float);
+    void setCpf(string cpf);
+    void setEndereco(string endereco);
+    void setSaldo(float saldo);
 
     // Métodos de retorno dos atributos
     string getEndereco() const;

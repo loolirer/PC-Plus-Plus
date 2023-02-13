@@ -8,7 +8,7 @@ class MemoriaRAM: public Produto {
     // Atributos
     int capacidade;
     int frequencia;
-    int DDR;
+    string DDR;
 
   public:
     // Métodos de sobrecarga do construtor
@@ -20,7 +20,7 @@ class MemoriaRAM: public Produto {
       int quantidade = 0,
       int capacidade = 0,
       int frequencia = 0,
-      int DDR = 0
+      string DDR = ""
     );
 
     // Método do destrutor
@@ -31,14 +31,14 @@ class MemoriaRAM: public Produto {
     virtual void desserializar(istream &is) override;
 
     // Métodos de modificação dos atributos
-    void setCapacidade(int);
-    void setFrequencia(int);
-    void setDDR(int);
+    void setCapacidade(int capacidade);
+    void setFrequencia(int frequencia);
+    void setDDR(string DDR);
 
     // Métodos de retorno dos atributos
     int getCapacidade() const;
     int getFrequencia() const;
-    int getDDR() const;
+    string getDDR() const;
 
     // Métodos da classe
     virtual void imprimirProduto() override;

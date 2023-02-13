@@ -9,7 +9,6 @@ class Processador: public Produto {
     int cores;
     int threads;
     float frequencia;
-    int cache;
     string socket;
 
   public:
@@ -23,7 +22,6 @@ class Processador: public Produto {
       int cores = 0,
       int threads = 0,
       float frequencia = 0,
-      int cache = 0,
       string socket = ""
     );
 
@@ -35,17 +33,15 @@ class Processador: public Produto {
     virtual void desserializar(istream &is) override;
 
     // Métodos de modificação dos atributos
-    void setCores(int);
-    void setThreads(int);
-    void setFrequencia(float);
-    void setCache(int);
-    void setSocket(string);
+    void setCores(int cores);
+    void setThreads(int threads);
+    void setFrequencia(float frequencia);
+    void setSocket(string socket);
 
     // Métodos de retorno dos atributos
     int getCores() const;
     int getThreads() const;
     float getFrequencia() const;
-    int getCache() const;
     string getSocket() const;
 
     // Métodos da classe

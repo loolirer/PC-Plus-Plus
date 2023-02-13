@@ -81,8 +81,8 @@ unsigned short int PlacaDeVideo::getBits() const {
 // Métodos da classe
 void PlacaDeVideo::imprimirProduto() {
   Produto::imprimirProduto();
-  cout << "  | Memória: " << memoria << endl;
-  cout << "  | DDR: " << tipoMemoria << endl;
-  cout << "  | Frequência: " << frequencia << endl;
-  cout << "  | Bits: " << bits << endl;
+  cout << "  | Memória: " << memoria << "\n";
+  cout << "  | DDR: " << tipoMemoria << "\n";
+  cout << "  | Frequência: " << frequencia << "\n";
+  cout << "  | Bits: " << bits << "\n\n";
 }

@@ -1,28 +1,4 @@
-#include <algorithm>
-#include <fstream>
-
 #include "Loja.h"
-
-// Remover Futuramente ??
-#include <iomanip>
-#include <cstring>
-#include <sstream>
-#include <ctime> 
-
-// Remover Todos Futuramente
-// Apenas Para Testes
-#include "Serializador.cpp"
-#include "Produto.cpp"
-#include "Processador.cpp"
-#include "PlacaMae.cpp"
-#include "MemoriaRAM.cpp"
-#include "FonteDeAlimentacao.cpp"
-#include "PlacaDeVideo.cpp"
-#include "MemoriaSecundaria.cpp"
-#include "Gabinete.cpp"
-#include "Usuario.cpp"
-#include "Administrador.cpp"
-#include "Cliente.cpp"
 
 Loja::Loja() {
   lerEstoque();
@@ -34,29 +10,39 @@ Loja::~Loja() {
   //escreverEstoque();
   escreverClientes();
   escreverAdministradores();
-  cout << "Objeto Loja Destruido!" << endl;
+
+  for (auto produto: produtos)
+    delete produto;
 }
 
-bool Loja::adicionarProduto(Produto* produto, int quantidade) {  
+bool Loja::adicionarProduto(Produto* produto, int quantidade) {
   if (procuraProduto(produto->getID()) != -1) {
     int quantidadeAtual = produto->getQuantidade();
-    produto->setQuantidade(quantidadeAtual);
+    produto->setQuantidade(quantidadeAtual + quantidade);
     return true;
   }
-  
+
   produtos.push_back(produto);
   return true;
 }
 
-bool Loja::removerProduto(string ID) {
-  for (unsigned i = 0; i < produtos.size(); i++) {
-    if (ID == produtos[i]->getID()) {
-      produtos.erase(produtos.begin() + i);
+bool Loja::removerProduto(Produto* produto, int quantidade) {
+  for (unsigned i = 0; i < produtos.size(); i++)
+    if (produto->getID() == produtos[i]->getID()) {
+      if(quantidade >= produtos[i]->getQuantidade())
+        produtos.erase(produtos.begin() + i);
+      else
+        produtos[i]->setQuantidade(produtos[i]->getQuantidade() - quantidade);
       return true;
     }
-  }
-
   return false;
+}
+
+bool Loja::removerProdutos(vector<Produto> itens) {
+  for (auto I : itens)
+    if(!removerProduto(&I, I.getQuantidade()))
+      return false;
+  return true;
 }
 
 int Loja::procuraProduto(string ID) {
@@ -67,6 +53,15 @@ int Loja::procuraProduto(string ID) {
   }
 
   return -1;
+}
+
+Produto* Loja::getProduto(string ID) {
+  int indiceProduto = procuraProduto(ID);
+
+  if (indiceProduto == -1)
+    return nullptr;
+
+  return produtos[indiceProduto];
 }
 
 bool Loja::adicionarCliente(Cliente cliente) {
@@ -89,6 +84,22 @@ bool Loja::adicionarAdministrador(Administrador administrador) {
   return true;
 }
 
+Cliente* Loja::loginCliente(string email, string senha) {
+  for (int c = 0; c < clientes.size(); c++)
+    if (email == clientes[c].getEmail())
+      if (clientes[c].conferirLogin(email, senha))
+        return &clientes[c];
+  return nullptr;
+}
+
+Administrador* Loja::loginAdministrador(string email, string senha) {
+  for (int a = 0; a < administradores.size(); a++)
+    if (email == administradores[a].getEmail())
+      if (administradores[a].conferirLogin(email, senha))
+        return &administradores[a];
+  return nullptr;
+}
+
 void Loja::ordenarPorPreco() {
   sort(
     produtos.begin(),
@@ -99,8 +110,8 @@ void Loja::ordenarPorPreco() {
   );
 }
 
-vector<string> Loja::imprimirEstoque(int tipoProduto) {
-  return imprimirProdutoArr[tipoProduto](this);
+vector<string> Loja::imprimirEstoque(int tipoProduto, int tipoDado, string comparador) {
+  return imprimirProdutoArr[tipoProduto](this, tipoDado, comparador);
 }
 
 void Loja::serializar(Produto *produto, ostream &os) {

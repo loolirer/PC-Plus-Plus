@@ -4,8 +4,6 @@
 #include <string>
 #include "Usuario.h"
 
-using namespace std;
-
 class Administrador: public Usuario {
   public:
     // Métodos de sobrecarga do construtor

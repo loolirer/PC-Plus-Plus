@@ -56,6 +56,6 @@ int MemoriaSecundaria::getCapacidade() const {
 // Métodos da classe
 void MemoriaSecundaria::imprimirProduto() {
   Produto::imprimirProduto();
-  cout << "  | Tipo: " << tipo << endl;
-  cout << "  | Capacidade: " << capacidade << endl;
+  cout << "  | Tipo: " << tipo << "\n";
+  cout << "  | Capacidade: " << capacidade << "\n\n";
 }

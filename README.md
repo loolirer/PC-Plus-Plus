@@ -1,6 +1,6 @@
 # PC++
 
-Esse repositório é dedicado ao desenvolvimento do projeto final da matéria de Técnicas de Programação do curso de Engenharia Elétrica da UFCG.
+Repositório dedicado ao desenvolvimento do projeto final da matéria de Técnicas de Programação do curso de Engenharia Elétrica da UFCG.
 
 O projeto tem como objetivo a criação de um aplicativo em C++ que simula o controle de estoque e ambiente de compra de uma loja de peças de computadores.
 

@@ -1,4 +1,4 @@
-# PC++
+# PC++ 🖥️
 
 Repositório dedicado ao desenvolvimento do projeto final da matéria de Técnicas de Programação do curso de Engenharia Elétrica da UFCG.
 
